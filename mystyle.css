@@ -1,0 +1,11 @@
+.txt {
+    height:400px;
+    width:400px;
+    border: 1px solid #000;
+    float:left;
+}
+
+#canv{
+    float:right;
+    margin-right:300px;
+}
