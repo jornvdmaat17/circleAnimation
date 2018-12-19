@@ -29,7 +29,7 @@ var chgray = "#000000";
 
 var circles = [];
 //Main circles
-circles.push(new circleText(100, 190, 65, "", cred , chred ));
+circles.push(new circleText(100, 190, 65, "logos", cred , chred ));
 circles.push(new circleText(250, 275, 65, "", cred, chred));
 circles.push(new circleText(280, 130, 65, "websites", cblue, chblue ));
 circles.push(new circleText(200, 200, 100, "mijn capaciteiten :)", cgray, chgray ));
@@ -90,7 +90,7 @@ function circleText(cx , cy, radius, txt, color, hovercolor){
         ctx.fill();
 
         ctx.beginPath();
-        ctx.font = String(this.radius /4) + "px Monda";
+        ctx.font ="25px Monda";
         ctx.fillStyle = "white";
         ctx.fillText(txt, this.x + x / ratio + this.radius / ratio - this.txt.length * this.radius / ratio, this.y + y / ratio + this.radius / ratio );
     }
