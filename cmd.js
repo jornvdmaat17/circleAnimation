@@ -40,10 +40,10 @@ circles.push(new circleText( 2.0,  2.0 ,  4.0, "mijn capaciteiten :)", cgray, ch
 circles.push(new circleText( 1.35,  1.2 ,  22.2, "", "black", "black"));
 circles.push(new circleText( 3.2,  1.5 ,  40, "", "black", "black"));
 circles.push(new circleText( 3.5,  1.4 ,  80.0, "", cblue, cblue));
-// circles.push(new circleText( 1.6,  4.7 ,  28.6,"", cred, cred));
-// circles.push(new circleText( 3.3,  5.0 ,  36.4 , "", "black", "black"));
-// circles.push(new circleText( 1.4,  40.0,  33.3, "", "black", "black"));
-// circles.push(new circleText( 1.3,  26.7,  40.0, "", cblue, cblue));
+circles.push(new circleText( 2.5,  3.8,  27.0 ,"", cred, cred));
+circles.push(new circleText( 3.4,  4.0 ,  36.4 , "", "black", "black"));
+circles.push(new circleText( 1.45,  6.5,  33.3, "", "black", "black"));
+circles.push(new circleText( 1.4,  10.0,  38.0, "", cblue, cblue));
 
 
 function draw(){
