@@ -9,39 +9,41 @@ var divX = 0;
 var divY = 0;
 
 var ratio = 20;
-
 var interval = setInterval(draw, 10);
-
 var canvdiv = document.getElementById("canvdiv");
+var canvasHeight = canvas.scrollHeight;
+var canvasWidth = canvas.scrollWidth;
+
+var Offset = canvasHeight / 25;
 
 var d = document.documentElement;
 
+//Red colors
 var cred = "#FF3419";
 var chred = "#E82E15";
-
+//Blue colors
 var cblue = "#1E77F9";
 var chblue = "#1466DE";
-
+//Gray colors
 var cgray = "#161616";
 var chgray = "#000000";
 
-
-
+//Keeps track of circles
 var circles = [];
 //Main circles
-circles.push(new circleText(100, 190, 65, "logos", cred , chred ));
-circles.push(new circleText(250, 275, 65, "", cred, chred));
-circles.push(new circleText(280, 130, 65, "websites", cblue, chblue ));
-circles.push(new circleText(200, 200, 100, "mijn capaciteiten :)", cgray, chgray ));
+circles.push(new circleText( 3.2,  2.1 ,  6.0, "logos", cred , chred ));
+circles.push(new circleText( 1.6,  1.55 ,  6.0, "", cred, chred));
+circles.push(new circleText( 1.5,  2.9 ,  6.0, "websites", cblue, chblue ));
+circles.push(new circleText( 2.0,  2.0 ,  4.0, "mijn capaciteiten :)", cgray, chgray ));
 
-//Smaal circles
-circles.push(new circleText(350, 340, 18, "", "black", "black"));
-circles.push(new circleText(90, 290 , 10, "", "black", "black"));
-circles.push(new circleText(70, 310, 5, "", cblue, cblue));
-circles.push(new circleText(160, 85, 14,"", cred, cred));
-circles.push(new circleText(120, 80 , 11, "", "black", "black"));
-circles.push(new circleText(290, 40, 12, "", "black", "black"));
-circles.push(new circleText(305, 15, 8, "", cblue, cblue));
+//Small circles
+circles.push(new circleText( 1.35,  1.2 ,  22.2, "", "black", "black"));
+circles.push(new circleText( 3.2,  1.5 ,  40, "", "black", "black"));
+circles.push(new circleText( 3.5,  1.4 ,  80.0, "", cblue, cblue));
+// circles.push(new circleText( 1.6,  4.7 ,  28.6,"", cred, cred));
+// circles.push(new circleText( 3.3,  5.0 ,  36.4 , "", "black", "black"));
+// circles.push(new circleText( 1.4,  40.0,  33.3, "", "black", "black"));
+// circles.push(new circleText( 1.3,  26.7,  40.0, "", cblue, cblue));
 
 
 function draw(){
@@ -54,25 +56,26 @@ function draw(){
         divX = event.pageX - canvdiv.offsetLeft;
         divY = event.pageY - canvdiv.offsetTop;
 
+        var first = false;
         for(i = circles.length; i > 0; i--){
-            detectedObject = circles[i - 1].detect();
+            circles[i - 1].detect();
+            if(detectedAnything && !first){
+                first = true;
+                //circles.push(circles[i-1]);
+            }
         }
     } 
     for(c of circles){
         c.display();
-    }  
+    } 
 
-    if(detectedObject != null){
-        detectedObject.display();
-    }
-    
     
 }
 
 function circleText(cx , cy, radius, txt, color, hovercolor){
-    this.x = cx;
-    this.y = cy;
-    this.radius = radius;
+    this.x = canvasHeight / cx  - Offset * 0.8;
+    this.y = canvasWidth / cy + Offset * 0.8;
+    this.radius =  canvasHeight / radius * 0.8;
     this.txt = txt;
     this.color = color;
     this.hovercolor = hovercolor;
@@ -92,17 +95,15 @@ function circleText(cx , cy, radius, txt, color, hovercolor){
         ctx.beginPath();
         ctx.font ="25px Monda";
         ctx.fillStyle = "white";
-        ctx.fillText(txt, this.x + x / ratio + this.radius / ratio - this.txt.length * this.radius / ratio, this.y + y / ratio + this.radius / ratio );
+        ctx.fillText(txt, this.x + x / ratio + this.radius / ratio - this.txt.length * this.radius / ratio, this.y + y / ratio + this.radius / ratio);
     }
 
     this.detect = function(){
         if(Math.pow(divX - (this.x + x / ratio), 2) + Math.pow(divY - (this.y + y / ratio), 2) < Math.pow(this.radius, 2) && !detectedAnything){
             this.detected = true;            
             detectedAnything = true;
-            return this;
         }else{
-            this.detected = false;
-            return null;            
+            this.detected = false;        
         }
     }
 
