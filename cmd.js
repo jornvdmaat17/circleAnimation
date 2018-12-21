@@ -27,19 +27,19 @@ var chgray = "#000000";
 //Keeps track of circles
 var circles = [];
 //Main circles
-circles.push(new circleText( 3.2,  2.1 ,  6.0, "       logos", cred , chred , true, "subdomains/logos.html"));
-circles.push(new circleText( 1.6,  1.55 ,  6.0, "    branding", cred, chred, true, "subdomains/branding.html"));
-circles.push(new circleText( 1.5,  2.9 ,  6.0, "    websites", cblue, chblue ,true,"subdomains/websites.html"));
-circles.push(new circleText( 2.0,  2.0 ,  4.0, " mijn capaciteiten :)", cgray, chgray, true, "subdomains/capaciteiten.html" ));
+circles.push(new circleText( 3.2,  2.1 ,  6.0, "       logos", cred , chred , true, "subdomains/logos.html" , false));
+circles.push(new circleText( 1.6,  1.55 ,  6.0, "    branding", cred, chred, true, "subdomains/branding.html" , false));
+circles.push(new circleText( 1.5,  2.9 ,  6.0, "    websites", cblue, chblue ,true,"subdomains/websites.html" ,false));
+circles.push(new circleText( 2.0,  2.0 ,  4.0, " mijn capaciteiten :)", cgray, chgray, true, "subdomains/capaciteiten.html" , false));
 
 //Small circles
-circles.push(new circleText( 1.35,  1.2 ,  22.2, "", "black", "black", false));
-circles.push(new circleText( 3.2,  1.5 ,  40, "", "black", "black", false));
-circles.push(new circleText( 3.5,  1.4 ,  80.0, "", cblue, cblue, false));
-circles.push(new circleText( 2.5,  3.8,  27.0 ,"", cred, cred, false));
-circles.push(new circleText( 3.4,  4.0 ,  36.4 , "", "black", "black", false));
-circles.push(new circleText( 1.45,  6.5,  33.3, "", "black", "black" , false));
-circles.push(new circleText( 1.4,  10.0,  38.0, "", cblue, cblue , false));
+circles.push(new circleText( 1.35,  1.2 ,  22.2, "", "black", "black", false, "", false));
+circles.push(new circleText( 3.2,  1.5 ,  40, "", "black", "black", false,  "", false));
+circles.push(new circleText( 3.5,  1.4 ,  80.0, "", cblue, cblue, false, "", false));
+circles.push(new circleText( 2.5,  3.8,  27.0 ,"", cred, cred, false, "", false));
+circles.push(new circleText( 3.4,  4.0 ,  36.4 , "", "black", "black", false, "", false));
+circles.push(new circleText( 1.45,  6.5,  33.3, "", "black", "black" , false, "", false));
+circles.push(new circleText( 1.4,  10.0,  38.0, "", cblue, cblue , false, "", false));
 
 //Function set on an interval to keep deleting and drawing the circles again.
 function draw(){
@@ -72,7 +72,6 @@ function draw(){
 
     //Draw a hovered circle again if it is found
     if(detectedObject != null){
-        detectedObject.setHover(true);
         detectedObject.display();
     }
 
@@ -87,14 +86,14 @@ function draw(){
     
 }
 
-function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href){
+function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href, detected){
     this.x = canvasHeight / cx  - Offset * 0.8;
     this.y = canvasWidth / cy + Offset * 0.8;
     this.radius =  canvasHeight / radius * 0.8;
     this.txt = txt;
     this.color = color;
     this.hovercolor = hovercolor;
-    this.detected = false;
+    this.detected = detected;
     this.mainCircle = mainCircle;
     this.href = href;
 
@@ -110,8 +109,9 @@ function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href){
         }else{
             ctx.beginPath();
             ctx.fillStyle = this.color;
+            ctx.globalAlpha = 0.96;
         }
-        ctx.globalAlpha = 0.96;
+       
         ctx.arc(this.x + x / ratio ,this.y + y / ratio, this.radius, 0, 2 * Math.PI);
         ctx.fill();
 
@@ -141,12 +141,8 @@ function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href){
         location.href = this.href;
     }
 
-    this.setHover = function(set){
-        this.detected = set;
-    }
-
     this.duplicate = function(){
-        return new circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href);
+        return new circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href, true);
     }
 
 }
