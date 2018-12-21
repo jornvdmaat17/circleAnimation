@@ -10,13 +10,9 @@ var divY = 0;
 
 var ratio = 25;
 var interval = setInterval(draw, 10);
-var canvdiv = document.getElementById("canvdiv");
-var canvasHeight = canvas.scrollHeight;
-var canvasWidth = canvas.scrollWidth;
-
+var canvasHeight = canvas.height;
+var canvasWidth = canvas.width;
 var Offset = canvasHeight / 45;
-
-var d = document.documentElement;
 
 //Red colors
 var cred = "#FF3419";
@@ -31,10 +27,10 @@ var chgray = "#000000";
 //Keeps track of circles
 var circles = [];
 //Main circles
-circles.push(new circleText( 3.2,  2.1 ,  6.0, "      logos", cred , chred , true, "#logos"));
-circles.push(new circleText( 1.6,  1.55 ,  6.0, "    branding", cred, chred, true, "#branding"));
-circles.push(new circleText( 1.5,  2.9 ,  6.0, "    websites", cblue, chblue ,true,"#websites"));
-circles.push(new circleText( 2.0,  2.0 ,  4.0, " mijn capaciteiten :)", cgray, chgray, true, "#capaciteiten" ));
+circles.push(new circleText( 3.2,  2.1 ,  6.0, "       logos", cred , chred , true, "subdomains/logos.html"));
+circles.push(new circleText( 1.6,  1.55 ,  6.0, "    branding", cred, chred, true, "subdomains/branding.html"));
+circles.push(new circleText( 1.5,  2.9 ,  6.0, "    websites", cblue, chblue ,true,"subdomains/websites.html"));
+circles.push(new circleText( 2.0,  2.0 ,  4.0, " mijn capaciteiten :)", cgray, chgray, true, "subdomains/capaciteiten.html" ));
 
 //Small circles
 circles.push(new circleText( 1.35,  1.2 ,  22.2, "", "black", "black", false));
@@ -45,17 +41,21 @@ circles.push(new circleText( 3.4,  4.0 ,  36.4 , "", "black", "black", false));
 circles.push(new circleText( 1.45,  6.5,  33.3, "", "black", "black" , false));
 circles.push(new circleText( 1.4,  10.0,  38.0, "", cblue, cblue , false));
 
-
+//Function set on an interval to keep deleting and drawing the circles again.
 function draw(){
+    //Reset variables
     first = true;
     detectedObject = null;
+    //Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //When the mouse moves, these positions should be updated
     document.onmousemove = function(event){
         x = event.clientX;
         y = event.clientY;
         divX = event.pageX - canvas.offsetLeft;
         divY = event.pageY - canvas.offsetTop;
     }
+    //Test if a circles has been hovered over
     for(i = circles.length; i > 0; i--){
         if(circles[i - 1].detectMouse()){
             if(first){
@@ -65,18 +65,24 @@ function draw(){
         }
     }
 
+    //Draw the circles
     for(c of circles){
         c.display();
     } 
+
+    //Draw a hovered circle again if it is found
     if(detectedObject != null){
         detectedObject.setHover(true);
         detectedObject.display();
     }
 
+    //Detect when we click on a maincircle
     document.addEventListener("click", function(event) {
-        if(detectedObject.mainCircle){
-            detectedObject.goToPage();
-        }        
+        if(detectedObject != null){
+            if(detectedObject.mainCircle){
+                detectedObject.goToPage();
+            }    
+        }            
     })
     
 }
@@ -95,31 +101,32 @@ function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href){
     this.display = function(){
         if(this.detected && mainCircle){
             ctx.beginPath();
-            ctx.arc(this.x + x/ratio, this.y + y / ratio, this.radius * 1.05, 0, 2 * Math.PI);
-            ctx.globalAlpha = 0.7;
+            ctx.arc(this.x + x/ratio, this.y + y / ratio, this.radius * 1.075, 0, 2 * Math.PI);
             ctx.fillStyle = this.hovercolor;
             ctx.fill();
-            
-            ctx.beginPath();
-            ctx.arc(this.x + x/ratio, this.y + y / ratio, this.radius * 1.025, 0, 2 * Math.PI);
-            ctx.globalAlpha = 0.85;
-            ctx.fillStyle = this.hovercolor;
-            ctx.fill();
-            
+
             ctx.beginPath();
             ctx.fillStyle = this.hovercolor;
         }else{
             ctx.beginPath();
             ctx.fillStyle = this.color;
         }
-        ctx.globalAlpha = 0.9999;
+        ctx.globalAlpha = 0.96;
         ctx.arc(this.x + x / ratio ,this.y + y / ratio, this.radius, 0, 2 * Math.PI);
         ctx.fill();
 
-        ctx.beginPath();
-        ctx.font = String(canvasHeight / 20) + "px Monda";
-        ctx.fillStyle = "white";
-        ctx.fillText(this.txt, this.x + x / ratio - this.radius, (this.y + y / ratio) * 1.02);
+        if(this.detected && mainCircle){
+            ctx.beginPath();
+            ctx.font = String(canvasHeight / 19) + "px Verdena";
+            ctx.fillStyle = "white";
+            ctx.fillText(this.txt.substring(1, this.txt.length), this.x + x / ratio - this.radius, (this.y + y / ratio) * 1.02);
+        }else{
+            ctx.beginPath();
+            ctx.font = String(canvasHeight / 20) + "px Verdena";
+            ctx.fillStyle = "white";
+            ctx.fillText(this.txt, this.x + x / ratio - this.radius, (this.y + y / ratio) * 1.02);
+        }
+        
     }
 
     this.detectMouse = function(){
