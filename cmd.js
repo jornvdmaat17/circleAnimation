@@ -31,10 +31,10 @@ var chgray = "#000000";
 //Keeps track of circles
 var circles = [];
 //Main circles
-circles.push(new circleText( 3.2,  2.1 ,  6.0, "logos", cred , chred , true, " "));
-circles.push(new circleText( 1.6,  1.55 ,  6.0, "branding", cred, chred, true, " "));
-circles.push(new circleText( 1.5,  2.9 ,  6.0, "websites", cblue, chblue ,true," "));
-circles.push(new circleText( 2.0,  2.0 ,  4.0, "mijn capaciteiten :)", cgray, chgray, true, " " ));
+circles.push(new circleText( 3.2,  2.1 ,  6.0, "      logos", cred , chred , true, "#logos"));
+circles.push(new circleText( 1.6,  1.55 ,  6.0, "    branding", cred, chred, true, "#branding"));
+circles.push(new circleText( 1.5,  2.9 ,  6.0, "    websites", cblue, chblue ,true,"#websites"));
+circles.push(new circleText( 2.0,  2.0 ,  4.0, " mijn capaciteiten :)", cgray, chgray, true, "#capaciteiten" ));
 
 //Small circles
 circles.push(new circleText( 1.35,  1.2 ,  22.2, "", "black", "black", false));
@@ -53,8 +53,8 @@ function draw(){
     document.onmousemove = function(event){
         x = event.clientX;
         y = event.clientY;
-        divX = event.pageX - canvdiv.offsetLeft;
-        divY = event.pageY - canvdiv.offsetTop;
+        divX = event.pageX - canvas.offsetLeft;
+        divY = event.pageY - canvas.offsetTop;
     }
     for(i = circles.length; i > 0; i--){
         if(circles[i - 1].detectMouse()){
@@ -117,9 +117,9 @@ function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href){
         ctx.fill();
 
         ctx.beginPath();
-        ctx.font = String(ratio) + "px Monda";
+        ctx.font = String(canvasHeight / 20) + "px Monda";
         ctx.fillStyle = "white";
-        ctx.fillText(txt, this.x - this.txt.length * 4.7- this.radius / 25 + x / ratio, (this.y + y / ratio) * 1.02);
+        ctx.fillText(this.txt, this.x + x / ratio - this.radius, (this.y + y / ratio) * 1.02);
     }
 
     this.detectMouse = function(){
@@ -131,7 +131,6 @@ function circleText(cx , cy, radius, txt, color, hovercolor, mainCircle, href){
     }
 
     this.goToPage = function() {
-        console.log(this.href);
         location.href = this.href;
     }
 
